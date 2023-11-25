@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import bookmarkIcon from "../assets/icons/BookmarkNavIcon.svg";
 import cat from "../assets/cat_on_planet.png";
-import { useNavigate, NavLink } from "react-router-dom";
+import {NavLink } from "react-router-dom";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
 
@@ -16,7 +16,6 @@ export type Post = {
 };
 
 const HomePage = () => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [postings, setPostings] = useState<Post[]>([]);
 
@@ -40,7 +39,7 @@ const HomePage = () => {
       <header>
         <nav className="flex items-center justify-end p-4 md:p-8">
           <NavLink
-            to={"/"}
+            to={"/bookmarks"}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
           >
             Bookmarks
@@ -58,7 +57,7 @@ const HomePage = () => {
         </h1>
         <div>
           <input
-            className="mb-8 md:mb-12 w-full max-w-5xl rounded-xl bg-dark-grey bg-[url('/src/assets/icons/SearchIcon.svg')] bg-[center_right_2rem] bg-no-repeat px-6 py-4 placeholder-white drop-shadow-md"
+            className="mb-8 w-full max-w-5xl rounded-xl bg-dark-grey bg-[url('/src/assets/icons/SearchIcon.svg')] bg-[center_right_2rem] bg-no-repeat px-6 py-4 placeholder-white drop-shadow-md md:mb-12"
             type="text"
             placeholder="Search..."
             value={searchTerm}
@@ -78,7 +77,7 @@ const HomePage = () => {
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">
             {postings.map((post) => (
-              <PostingCard key={post.jobId} post={post} bookmarked={true}/>
+              <PostingCard key={post.jobId} post={post} bookmarked={true} />
             ))}
           </div>
         )}

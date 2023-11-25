@@ -33,6 +33,7 @@ export default {
       "dark-grey": "#171717",
       "light-grey": "#353535",
       green: "#00BE4C",
+      grey: "#a3a3a3",
     },
   },
   plugins: [],

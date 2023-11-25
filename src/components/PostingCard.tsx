@@ -18,7 +18,7 @@ const PostingCard: React.FC<CardProps> = ({ post, bookmarked }) => {
   return (
     <div
       onClick={handleCardClick}
-      className="box-border flex h-[7rem] w-full items-center justify-center rounded-xl bg-dark-grey p-3 hover:cursor-pointer  sm:h-[9rem] md:w-[48.75%] xl:w-[32%] 2xl:h-[11rem]"
+      className="box-border flex h-[7rem] w-full items-center justify-center rounded-xl bg-dark-grey p-3 drop-shadow-md hover:translate-y-[-2px] hover:cursor-pointer sm:h-[9rem] md:w-[48.75%] xl:w-[32%] 2xl:h-[11rem]"
     >
       <img
         className="mr-3 h-full rounded-xl"
@@ -47,9 +47,9 @@ const PostingCard: React.FC<CardProps> = ({ post, bookmarked }) => {
           />
         </div>
         <div className="flex items-center justify-between ">
-          <h4 className="text-xs sm:text-base">{post.postingDate}</h4>
+          <h4 className="text-grey text-xs sm:text-base">{post.postingDate}</h4>
           <a
-            className="rounded-lg bg-light-grey p-2 px-4 text-xs sm:px-8 sm:text-base"
+            className="hover:bg-green rounded-lg bg-light-grey p-2 px-4 text-xs hover:font-medium hover:text-dark-grey sm:px-8 sm:text-base"
             onClick={(e) => {
               e.stopPropagation();
               console.log("clicked Apply button");
