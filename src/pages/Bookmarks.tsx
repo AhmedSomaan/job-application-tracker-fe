@@ -1,26 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Details } from "./JobDetails";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
 import cat from "../assets/cat_on_planet.png";
 import homeIcon from "../assets/icons/HomeIcon.svg"
-
-export type Details = {
-  bookmarked: boolean;
-  status: string;
-  jobId: string;
-  title: string;
-  description: string;
-  companyName: string;
-  companyLogo: string;
-  postingDate: string;
-  location: string;
-  salary: string;
-  benefits: string;
-  tags: string;
-  link: string;
-  _id: string;
-};
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Details[]>([]);
@@ -28,10 +12,10 @@ const Bookmarks = () => {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const {data} = await axios.get(`http://localhost:8080/user/bookmarks`);
+        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/bookmarks`);
         setBookmarks(data);
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
     fetchBookmarks();
