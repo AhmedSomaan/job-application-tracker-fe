@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import bookmarkIcon from "../assets/icons/BookmarkNavIcon.svg";
 import cat from "../assets/cat_on_planet.png";
-import {NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
 
@@ -15,6 +15,12 @@ export type Post = {
   postingDate: string;
 };
 
+interface ReqBody {
+  field: string;
+  geoId?: string;
+  page?: string;
+}
+
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [postings, setPostings] = useState<Post[]>([]);
@@ -25,10 +31,15 @@ const HomePage = () => {
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log("Navigate to job postings for search term:", searchTerm);
+      console.log("get job postings for search term:", searchTerm);
       const fetchPostings = async () => {
-        const { data } = await axios.get(`http://localhost:8080/postings`);
-        console.log(data);
+        const body: ReqBody = {
+          field: searchTerm,
+        };
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/postings`,
+          body,
+        );
         setPostings(data);
       };
       fetchPostings();

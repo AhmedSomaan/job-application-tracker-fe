@@ -47,7 +47,9 @@ const PostingCard: React.FC<CardProps> = ({ post, bookmarked }) => {
           />
         </div>
         <div className="flex items-center justify-between ">
-          <h4 className="text-grey text-xs sm:text-base">{post.postingDate}</h4>
+          <h4 className="text-grey line-clamp-1 text-xs sm:text-base">
+            {post.postingDate}
+          </h4>
           <a
             className="hover:bg-green rounded-lg bg-light-grey p-2 px-4 text-xs hover:font-medium hover:text-dark-grey sm:px-8 sm:text-base"
             onClick={(e) => {
