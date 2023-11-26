@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import backIcon from "../assets/icons/BackIcon.svg";
 import checkIcon from "../assets/icons/CheckIcon.svg";
 
@@ -21,7 +21,7 @@ export type Details = {
   _id: string;
 };
 
-const StatusEnum = {
+export const StatusEnum = {
   APPLIED: "applied",
   EXPIRED: "expired",
   APPLY: "intend to apply",
@@ -30,6 +30,7 @@ const StatusEnum = {
 const JobDetails = () => {
   const { jobId } = useParams();
   const [details, setDetails] = useState<Details>();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -47,11 +48,11 @@ const JobDetails = () => {
 
   let applyButton;
 
-  switch ("applied") {
+  switch (details?.status) {
     case StatusEnum.APPLY:
       applyButton = (
         <a
-          className="mb-4 w-full rounded-xl bg-light-grey p-3"
+          className="hover:bg-green mb-4 w-full rounded-xl bg-light-grey p-3 hover:font-medium hover:text-dark-grey"
           href={details?.link}
         >
           Apply Now
@@ -82,7 +83,7 @@ const JobDetails = () => {
       <header>
         <nav className="flex items-center justify-start p-4 md:p-8">
           <NavLink
-            to={"/bookmarks"}
+            to={location.state?.from ? location.state?.from : -1}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
           >
             <img className="stroke-white" src={backIcon} alt="bookmark icon" />
@@ -127,9 +128,15 @@ const JobDetails = () => {
           <div>
             <div className="mb-4">
               <h2 className="mb-1 text-lg">Tags</h2>
-              <p className="w-fit rounded-xl bg-light-grey p-2 px-4">
-                {details?.tags}
-              </p>
+              <div className="flex gap-3 overflow-x-auto pb-1">
+                {details?.tags
+                  .split("|")
+                  .map((tag, index) => (
+                    <p key={index} className="w-fit flex flex-nowrap rounded-xl bg-light-grey p-2 px-4 whitespace-nowrap">
+                      {tag}
+                    </p>
+                  ))}
+              </div>
             </div>
             {details?.salary ? (
               <div className="mb-4">
@@ -143,7 +150,7 @@ const JobDetails = () => {
               <h2 className="mb-1 text-lg">Location</h2>
               <div className="rounded-xl bg-dark-grey">
                 <p className="p-4">{details?.location}</p>
-                <div className="bg-light-grey w-full aspect-square rounded-b-xl flex justify-center items-center">
+                <div className="flex aspect-square w-full items-center justify-center rounded-b-xl bg-light-grey">
                   MAP GOES HERE
                 </div>
               </div>

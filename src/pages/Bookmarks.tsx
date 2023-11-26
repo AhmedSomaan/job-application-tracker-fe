@@ -52,7 +52,7 @@ const Bookmarks = () => {
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">
             {bookmarks.map((post) => (
-              <PostingCard key={post.jobId} post={post} bookmarked={true} />
+              <PostingCard key={post.jobId} post={post} bookmarked={true} status={post.status}/>
             ))}
           </div>
         )}
