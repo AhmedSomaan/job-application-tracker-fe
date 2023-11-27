@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import backIcon from "../assets/icons/BackIcon.svg";
 import checkIcon from "../assets/icons/CheckIcon.svg";
+import bookmarkIcon from "../assets/icons/BookmarkGreenIcon.svg";
+import unbookmarkIcon from "../assets/icons/BookmarkEmptyIcon.svg";
 
 export type Details = {
   bookmarked: boolean;
@@ -31,6 +33,7 @@ const JobDetails = () => {
   const { jobId } = useParams();
   const [details, setDetails] = useState<Details>();
   const location = useLocation();
+  const [selectedStatus, setSelectedStatus] = useState(StatusEnum.APPLY);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -39,12 +42,48 @@ const JobDetails = () => {
           `${import.meta.env.VITE_BACKEND_URL}/postings/${jobId}`,
         );
         setDetails(data);
+        setSelectedStatus(data.status)
       } catch (error) {
         console.error(error);
       }
     };
     fetchDetails();
   }, []);
+
+  const handleBookmark = async () => {
+    try {
+      const body = {
+        isBookmarked: !details?.bookmarked,
+      };
+      const { data } = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/postings/${jobId}`,
+        body,
+      );
+      console.log(data);
+      setDetails(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSelect = async (e: React.ChangeEvent<{ value: unknown }>) => {
+    const selectedValue = e.target.value as string;
+    setSelectedStatus(selectedValue);
+
+    try {
+      const body = {
+        status: selectedValue,
+      };
+      const { data } = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/postings/${jobId}`,
+        body,
+      );
+      console.log(data);
+      setDetails(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   let applyButton;
 
@@ -81,18 +120,24 @@ const JobDetails = () => {
   return (
     <div>
       <header>
-        <nav className="flex items-center justify-start p-4 md:p-8">
+        <nav className="flex items-center justify-between p-4 md:p-8 md:pb-0">
           <NavLink
             to={location.state?.from ? location.state?.from : -1}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
           >
             <img className="stroke-white" src={backIcon} alt="bookmark icon" />
           </NavLink>
+          <img
+            className="hover:scale-105 hover:cursor-pointer"
+            src={details?.bookmarked ? bookmarkIcon : unbookmarkIcon}
+            onClick={handleBookmark}
+            alt="Bookmark Icon"
+          />
         </nav>
       </header>
       <main className="flex h-full grow flex-col items-center justify-center p-4 md:p-8">
-        <div className="flex w-full flex-col">
-          <div className="mb-4 flex h-[7rem] items-center justify-center">
+        <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-4 flex h-[7rem] items-center justify-center sm:m-0 sm:grow sm:justify-start">
             <img
               className="mr-3 h-full rounded-xl"
               src={details?.companyLogo}
@@ -100,52 +145,58 @@ const JobDetails = () => {
             />
             <div className="flex h-full flex-col justify-around text-left">
               <h1 className="line-clamp-3 break-words text-xl ">
-                {details?.title}
+                {details?.title}asd asd a da da dasda da da s asd ada da a ad sa
               </h1>
               <h2 className="line-clamp-1 break-all text-lg">
-                {details?.companyName}
+                {details?.companyName}ad asda s a das as dasd ad a
               </h2>
             </div>
           </div>
-          <div className=" flex flex-col items-center">
-            <h3 className="mb-1 self-start text-lg">Status</h3>
-            <input
-              className="mb-3 w-full rounded-xl bg-dark-grey p-2 px-4"
-              type="text"
-              value={details?.status}
-            />
+          <div className=" flex flex-col items-center sm:ml-2 sm:min-w-[30%]">
+            <label className="mb-1 self-start text-lg">Status</label>
+            <select
+              className="mb-3 w-full rounded-xl bg-dark-grey p-2 px-4 text-lg hover:cursor-pointer"
+              value={selectedStatus}
+              onChange={handleSelect}
+            >
+              <option
+                className="hover:bg-green active:text-green"
+                value={StatusEnum.APPLY}
+              >
+                Intend to Apply
+              </option>
+              <option value={StatusEnum.APPLIED}>Applied</option>
+              <option value={StatusEnum.EXPIRED}>Expired</option>
+            </select>
             {applyButton}
           </div>
         </div>
-        <div className="flex w-full flex-col text-left">
-          <div className="mb-4 w-full">
+        <div className="flex w-full flex-col text-left sm:flex-row sm:gap-4">
+          <div className="mb-4 w-full sm:grow">
             <h2 className="mb-1 text-lg">Description</h2>
             <div className="rounded-xl bg-dark-grey p-4 ">
               <p className="text-grey">posted: {details?.postingDate}</p>
               <p>{details?.description}</p>
             </div>
           </div>
-          <div>
-            <div className="mb-4">
+          <div className="sm:min-w-[30%]">
+            <div className="mb-4 w-full">
               <h2 className="mb-1 text-lg">Tags</h2>
               <div className="flex gap-3 overflow-x-auto pb-1">
-                {details?.tags
-                  .split("|")
-                  .map((tag, index) => (
-                    <p key={index} className="w-fit flex flex-nowrap rounded-xl bg-light-grey p-2 px-4 whitespace-nowrap">
-                      {tag}
-                    </p>
-                  ))}
+                {details?.tags.split("|").map((tag, index) => (
+                  <p
+                    key={index}
+                    className="flex w-fit flex-nowrap whitespace-nowrap rounded-xl bg-light-grey p-2 px-4"
+                  >
+                    {tag}
+                  </p>
+                ))}
               </div>
             </div>
-            {details?.salary ? (
-              <div className="mb-4">
-                <h2 className="mb-1 text-lg">Salary</h2>
-                <p className="rounded-xl bg-dark-grey p-4">{details?.salary}</p>
-              </div>
-            ) : (
-              <div></div>
-            )}
+            <div className="mb-4">
+              <h2 className="mb-1 text-lg">Salary</h2>
+              <p className="rounded-xl bg-dark-grey p-4">$ {details?.salary}</p>
+            </div>
             <div>
               <h2 className="mb-1 text-lg">Location</h2>
               <div className="rounded-xl bg-dark-grey">

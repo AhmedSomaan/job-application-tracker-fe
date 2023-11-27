@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import unbookmarkedIcon from "../assets/icons/BookmarkEmptyIcon.svg";
 import bookmarkedIcon from "../assets/icons/BookmarkGreenIcon.svg";
 import { Post } from "../pages/HomePage";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { StatusEnum } from "../pages/JobDetails";
 import checkIcon from "../assets/icons/CheckIcon.svg";
+import axios from "axios";
 
 interface CardProps {
   post: Post;
@@ -15,9 +16,13 @@ interface CardProps {
 const PostingCard: React.FC<CardProps> = ({ post, bookmarked, status }) => {
   const navigate = useNavigate();
   let applyButton;
+  const [isBookmarked, setIsBookmarked] = useState(bookmarked);
+  const location = useLocation();
 
   const handleCardClick = () => {
-    navigate(`/posting/${post.jobId}`);
+    navigate(`/posting/${post.jobId}`, {
+      state: { from: location.pathname },
+    });
   };
 
   const handleApply = async (
@@ -27,11 +32,30 @@ const PostingCard: React.FC<CardProps> = ({ post, bookmarked, status }) => {
     console.log("clicked Apply button");
   };
 
+  const handleBookmark = async (
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>,
+  ) => {
+    e.stopPropagation();
+    setIsBookmarked(!isBookmarked);
+    try {
+      const body = {
+        isBookmarked: !isBookmarked,
+      };
+      const { data } = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/postings/${post.jobId}`,
+        body,
+      );
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   switch (status) {
     case StatusEnum.APPLY:
       applyButton = (
         <a
-          className="duration-75 hover:bg-green ml-2 flex items-center justify-center rounded-lg bg-light-grey p-2 px-4 text-xs hover:font-medium hover:text-dark-grey sm:px-8 sm:text-base"
+          className="hover:bg-green ml-2 flex items-center justify-center rounded-lg bg-light-grey p-2 px-4 text-xs duration-75 hover:font-medium hover:text-dark-grey sm:px-8 sm:text-base"
           onClick={handleApply}
           href={post.link}
           target="_blank"
@@ -81,7 +105,10 @@ const PostingCard: React.FC<CardProps> = ({ post, bookmarked, status }) => {
       <div className="flex h-full grow flex-col justify-around gap-1 text-left">
         <div className="flex justify-between text-ellipsis">
           <div>
-            <h2 className="text-md line-clamp-1 sm:text-xl">{post.title}</h2>
+            <h2 className="text-md line-clamp-1 sm:text-xl">
+              {/* {post.jobId} */}
+              {post.title}
+            </h2>
             <h3 className="line-clamp-1 text-xs sm:text-base">
               {post.companyName}
             </h3>
@@ -90,12 +117,9 @@ const PostingCard: React.FC<CardProps> = ({ post, bookmarked, status }) => {
             </h3>
           </div>
           <img
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("clicked bookmark");
-            }}
-            className="ml-3 self-start duration-300 hover:scale-110"
-            src={bookmarked ? bookmarkedIcon : unbookmarkedIcon}
+            onClickCapture={handleBookmark}
+            className="ml-3 self-start duration-100 hover:scale-110"
+            src={isBookmarked ? bookmarkedIcon : unbookmarkedIcon}
             alt="Bookmark icon"
           />
         </div>

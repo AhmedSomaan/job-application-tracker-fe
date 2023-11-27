@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
 import bookmarkIcon from "../assets/icons/BookmarkNavIcon.svg";
 import cat from "../assets/cat_on_planet.png";
 import { NavLink } from "react-router-dom";
@@ -15,6 +15,12 @@ export type Post = {
   postingDate: string;
 };
 
+type SavedInfo = {
+  bookmarked: boolean;
+  jobId: string;
+  status: string;
+};
+
 interface ReqBody {
   field: string;
   geoId?: string;
@@ -24,6 +30,7 @@ interface ReqBody {
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [postings, setPostings] = useState<Post[]>([]);
+  const [savedList, setSavedList] = useState<SavedInfo[]>([]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -45,10 +52,36 @@ const HomePage = () => {
       fetchPostings();
     }
   };
+
+  const getBookmarkValue = (jobId: string) => {
+    const value = savedList.find(saved => saved.jobId === jobId)
+    console.log(value?.bookmarked);
+    return value?.bookmarked ? true : false;
+  }
+  const getStatusValue = (jobId: string) => {
+    const value = savedList.find(saved => saved.jobId === jobId)
+    console.log(value?.status);
+    return value?.status ? value.status : "intend to apply";
+  }
+
+  useEffect(() => {
+    const fetchSavedList = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/saved`,
+        );
+        setSavedList(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSavedList();
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col">
       <header>
-        <nav className="flex items-center justify-end p-4 md:p-8">
+        <nav className="flex items-center justify-end p-4 md:p-8 md:pb-0">
           <NavLink
             to={"/bookmarks"}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
@@ -88,7 +121,12 @@ const HomePage = () => {
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">
             {postings.map((post) => (
-              <PostingCard key={post.jobId} post={post} bookmarked={true} status="intend to apply"/>
+              <PostingCard
+                key={post.jobId}
+                post={post}
+                bookmarked={getBookmarkValue(post.jobId)}
+                status={getStatusValue(post.jobId)}
+              />
             ))}
           </div>
         )}

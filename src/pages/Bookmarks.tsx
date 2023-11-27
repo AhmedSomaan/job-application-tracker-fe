@@ -24,7 +24,7 @@ const Bookmarks = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <header>
-        <nav className="flex items-center justify-end p-4 md:p-8">
+        <nav className="flex items-center justify-end p-4 md:p-8 md:pb-0">
           <NavLink
             to={"/"}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
@@ -52,7 +52,12 @@ const Bookmarks = () => {
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">
             {bookmarks.map((post) => (
-              <PostingCard key={post.jobId} post={post} bookmarked={true} status={post.status}/>
+              <PostingCard
+                key={post.jobId}
+                post={post}
+                bookmarked={true}
+                status={post.status}
+              />
             ))}
           </div>
         )}
