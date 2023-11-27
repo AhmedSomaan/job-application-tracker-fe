@@ -151,7 +151,7 @@ const JobDetails = () => {
                 alt="Company Logo"
               />
               <div className="flex h-full flex-col justify-around text-left">
-                <h1 className="line-clamp-3 break-words text-xl ">
+                <h1 className="line-clamp-3 break-words text-xl md:text-3xl font-medium">
                   {details?.title}
                 </h1>
                 <h2 className="line-clamp-1 break-all text-lg">
@@ -211,7 +211,13 @@ const JobDetails = () => {
                 <div className="rounded-xl bg-dark-grey">
                   <p className="p-4">{details?.location}</p>
                   <div className="flex aspect-square w-full items-center justify-center rounded-b-xl bg-light-grey">
-                    MAP GOES HERE
+                    
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d184589.25133211334!2d-79.5886287!3d43.706246!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON!5e0!3m2!1sen!2sca!4v1701112047163!5m2!1sen!2sca"
+                      width="600"
+                      height="450"
+                      loading="lazy"
+                    ></iframe>
                   </div>
                 </div>
               </div>

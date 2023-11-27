@@ -1,3 +1,15 @@
+# Resources
+
+- [Backend](https://github.com/AhmedSomaan/job-application-tracker-be)
+- [Figma Mockups](https://www.figma.com/file/93CsRodOo9qyevOa7qcLhK/Capstone---Job-application-tracker?type=design&mode=design&t=PxBox5RN5vMHxOqT-1)
+
+# Technologies used
+
+- React
+- Typescript
+- Tailwind 
+- Axios
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
