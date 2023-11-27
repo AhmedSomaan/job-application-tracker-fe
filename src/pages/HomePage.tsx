@@ -1,6 +1,5 @@
 import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
-import bookmarkIcon from "../assets/icons/BookmarkNavIcon.svg";
-import cat from "../assets/cat_on_planet.png";
+import cat from "../assets/ComputerCat.png";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
@@ -87,11 +86,21 @@ const HomePage = () => {
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
           >
             Bookmarks
-            <img
-              className="stroke-white"
-              src={bookmarkIcon}
-              alt="bookmark icon"
-            />
+            <svg
+              width="26"
+              height="32"
+              viewBox="0 0 26 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 9C1 6.19974 1 4.79961 1.56054 3.73005C2.0536 2.78924 2.84036 2.02433 3.80805 1.54497C4.90817 1 6.3483 1 9.22857 1H16.7714C19.6517 1 21.0918 1 22.192 1.54497C23.1596 2.02433 23.9464 2.78924 24.4395 3.73005C25 4.79961 25 6.19974 25 9V31L13 24.3333L1 31V9Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </NavLink>
         </nav>
       </header>
@@ -112,11 +121,11 @@ const HomePage = () => {
         {postings.length === 0 ? (
           <div className="flex h-full grow flex-col items-center justify-center">
             <img
-              className="animate-float w-[10rem] md:w-[14rem]"
+              className="animate-float w-[14rem] md:w-[20rem]"
               src={cat}
               alt="Green Cat floating on planet"
             />
-            <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40"></div>
+            <div className="animate-shadow h-4 w-[10rem] md:w-[13rem] rounded-[50%] bg-light-grey opacity-40"></div>
           </div>
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">

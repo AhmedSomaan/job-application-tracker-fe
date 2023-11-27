@@ -145,10 +145,10 @@ const JobDetails = () => {
             />
             <div className="flex h-full flex-col justify-around text-left">
               <h1 className="line-clamp-3 break-words text-xl ">
-                {details?.title}asd asd a da da dasda da da s asd ada da a ad sa
+                {details?.title}
               </h1>
               <h2 className="line-clamp-1 break-all text-lg">
-                {details?.companyName}ad asda s a das as dasd ad a
+                {details?.companyName}
               </h2>
             </div>
           </div>
