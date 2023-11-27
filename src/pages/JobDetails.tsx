@@ -5,6 +5,7 @@ import backIcon from "../assets/icons/BackIcon.svg";
 import checkIcon from "../assets/icons/CheckIcon.svg";
 import bookmarkIcon from "../assets/icons/BookmarkGreenIcon.svg";
 import unbookmarkIcon from "../assets/icons/BookmarkEmptyIcon.svg";
+import cat from "../assets/cat_on_planet.png";
 
 export type Details = {
   bookmarked: boolean;
@@ -42,7 +43,7 @@ const JobDetails = () => {
           `${import.meta.env.VITE_BACKEND_URL}/postings/${jobId}`,
         );
         setDetails(data);
-        setSelectedStatus(data.status)
+        setSelectedStatus(data.status);
       } catch (error) {
         console.error(error);
       }
@@ -93,6 +94,7 @@ const JobDetails = () => {
         <a
           className="hover:bg-green mb-4 w-full rounded-xl bg-light-grey p-3 hover:font-medium hover:text-dark-grey"
           href={details?.link}
+          target="_blank"
         >
           Apply Now
         </a>
@@ -111,7 +113,11 @@ const JobDetails = () => {
       break;
     default:
       applyButton = (
-        <a className="w-full rounded-xl bg-light-grey p-3" href={details?.link}>
+        <a
+          className="w-full rounded-xl bg-light-grey p-3"
+          href={details?.link}
+          target="_blank"
+        >
           Apply Now
         </a>
       );
@@ -135,80 +141,96 @@ const JobDetails = () => {
           />
         </nav>
       </header>
-      <main className="flex h-full grow flex-col items-center justify-center p-4 md:p-8">
-        <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between">
-          <div className="mb-4 flex h-[7rem] items-center justify-center sm:m-0 sm:grow sm:justify-start">
-            <img
-              className="mr-3 h-full rounded-xl"
-              src={details?.companyLogo}
-              alt="Company Logo"
-            />
-            <div className="flex h-full flex-col justify-around text-left">
-              <h1 className="line-clamp-3 break-words text-xl ">
-                {details?.title}
-              </h1>
-              <h2 className="line-clamp-1 break-all text-lg">
-                {details?.companyName}
-              </h2>
-            </div>
-          </div>
-          <div className=" flex flex-col items-center sm:ml-2 sm:min-w-[30%]">
-            <label className="mb-1 self-start text-lg">Status</label>
-            <select
-              className="mb-3 w-full rounded-xl bg-dark-grey p-2 px-4 text-lg hover:cursor-pointer"
-              value={selectedStatus}
-              onChange={handleSelect}
-            >
-              <option
-                className="hover:bg-green active:text-green"
-                value={StatusEnum.APPLY}
-              >
-                Intend to Apply
-              </option>
-              <option value={StatusEnum.APPLIED}>Applied</option>
-              <option value={StatusEnum.EXPIRED}>Expired</option>
-            </select>
-            {applyButton}
-          </div>
-        </div>
-        <div className="flex w-full flex-col text-left sm:flex-row sm:gap-4">
-          <div className="mb-4 w-full sm:grow">
-            <h2 className="mb-1 text-lg">Description</h2>
-            <div className="rounded-xl bg-dark-grey p-4 ">
-              <p className="text-grey">posted: {details?.postingDate}</p>
-              <p>{details?.description}</p>
-            </div>
-          </div>
-          <div className="sm:min-w-[30%]">
-            <div className="mb-4 w-full">
-              <h2 className="mb-1 text-lg">Tags</h2>
-              <div className="flex gap-3 overflow-x-auto pb-1">
-                {details?.tags.split("|").map((tag, index) => (
-                  <p
-                    key={index}
-                    className="flex w-fit flex-nowrap whitespace-nowrap rounded-xl bg-light-grey p-2 px-4"
-                  >
-                    {tag}
-                  </p>
-                ))}
+      {details?.description ? (
+        <main className="flex h-full grow flex-col items-center justify-center p-4 md:p-8">
+          <div className="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-4 flex h-[7rem] items-center justify-center sm:m-0 sm:grow sm:justify-start">
+              <img
+                className="mr-3 h-full rounded-xl"
+                src={details?.companyLogo}
+                alt="Company Logo"
+              />
+              <div className="flex h-full flex-col justify-around text-left">
+                <h1 className="line-clamp-3 break-words text-xl ">
+                  {details?.title}
+                </h1>
+                <h2 className="line-clamp-1 break-all text-lg">
+                  {details?.companyName}
+                </h2>
               </div>
             </div>
-            <div className="mb-4">
-              <h2 className="mb-1 text-lg">Salary</h2>
-              <p className="rounded-xl bg-dark-grey p-4">$ {details?.salary}</p>
+            <div className=" flex flex-col items-center sm:ml-2 sm:min-w-[30%]">
+              <label className="mb-1 self-start text-lg">Status</label>
+              <select
+                className="mb-3 w-full rounded-xl bg-dark-grey p-2 px-4 text-lg hover:cursor-pointer"
+                value={selectedStatus}
+                onChange={handleSelect}
+              >
+                <option
+                  className="hover:bg-green active:text-green"
+                  value={StatusEnum.APPLY}
+                >
+                  Intend to Apply
+                </option>
+                <option value={StatusEnum.APPLIED}>Applied</option>
+                <option value={StatusEnum.EXPIRED}>Expired</option>
+              </select>
+              {applyButton}
             </div>
-            <div>
-              <h2 className="mb-1 text-lg">Location</h2>
-              <div className="rounded-xl bg-dark-grey">
-                <p className="p-4">{details?.location}</p>
-                <div className="flex aspect-square w-full items-center justify-center rounded-b-xl bg-light-grey">
-                  MAP GOES HERE
+          </div>
+          <div className="flex w-full flex-col text-left sm:flex-row sm:gap-4">
+            <div className="mb-4 w-full sm:grow">
+              <h2 className="mb-1 text-lg">Description</h2>
+              <div className="rounded-xl bg-dark-grey p-4 ">
+                <p className="text-grey">posted: {details?.postingDate}</p>
+                <p>{details?.description}</p>
+              </div>
+            </div>
+            <div className="sm:min-w-[30%]">
+              <div className="mb-4 w-full">
+                <h2 className="mb-1 text-lg">Tags</h2>
+                <div className="flex gap-3 overflow-x-auto pb-1">
+                  {details?.tags.split("|").map((tag, index) => (
+                    <p
+                      key={index}
+                      className="flex w-fit flex-nowrap whitespace-nowrap rounded-xl bg-light-grey p-2 px-4"
+                    >
+                      {tag}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <h2 className="mb-1 text-lg">Salary</h2>
+                <p className="rounded-xl bg-dark-grey p-4">
+                  $ {details?.salary}
+                </p>
+              </div>
+              <div>
+                <h2 className="mb-1 text-lg">Location</h2>
+                <div className="rounded-xl bg-dark-grey">
+                  <p className="p-4">{details?.location}</p>
+                  <div className="flex aspect-square w-full items-center justify-center rounded-b-xl bg-light-grey">
+                    MAP GOES HERE
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      ) : (
+        <main className="flex h-full grow flex-col items-center justify-center gap-8">
+          <h1 className="mb-8 text-2xl font-medium sm:text-3xl md:text-4xl">
+            Loading Details...
+          </h1>
+          <img
+            className="animate-float w-[14rem] md:w-[20rem]"
+            src={cat}
+            alt="Green Cat floating on planet"
+          />
+          <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
+        </main>
+      )}
     </div>
   );
 };
