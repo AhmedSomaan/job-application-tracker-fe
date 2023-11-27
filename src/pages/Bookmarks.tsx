@@ -4,6 +4,7 @@ import { Details } from "./JobDetails";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
 import cat from "../assets/cat_on_planet.png";
+import logo from "../assets/JobCatLogo.png";
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Details[]>([]);
@@ -23,7 +24,15 @@ const Bookmarks = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <header>
-        <nav className="flex items-center justify-end p-4 md:p-8 md:pb-0">
+        <nav className="flex items-center justify-between p-4 md:p-8 md:pb-0">
+          <a className="hover:text-green flex items-end justify-start" href="/">
+            <img
+              className="mr-2 max-w-[3rem] md:mr-4"
+              src={logo}
+              alt="Logo of cat head in briefcase"
+            />{" "}
+            <h2 className="collapse  text-2xl font-bold md:visible ">JobCat</h2>
+          </a>
           <NavLink
             to={"/"}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"

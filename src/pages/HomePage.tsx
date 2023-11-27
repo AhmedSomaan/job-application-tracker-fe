@@ -3,6 +3,7 @@ import cat from "../assets/ComputerCat.png";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
+import logo from "../assets/JobCatLogo.png";
 
 export type Post = {
   title: string;
@@ -80,7 +81,15 @@ const HomePage = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <header>
-        <nav className="flex items-center justify-end p-4 md:p-8 md:pb-0">
+        <nav className="flex items-center justify-between p-4 md:p-8 md:pb-0">
+          <a className="hover:text-green flex items-end justify-start" href="/">
+            <img
+              className="mr-2 max-w-[3rem] md:mr-4"
+              src={logo}
+              alt="Logo of cat head in briefcase"
+            />{" "}
+            <h2 className="collapse  text-2xl font-bold md:visible ">JobCat</h2>
+          </a>
           <NavLink
             to={"/bookmarks"}
             className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
@@ -125,7 +134,7 @@ const HomePage = () => {
               src={cat}
               alt="Green Cat floating on planet"
             />
-            <div className="animate-shadow h-4 w-[10rem] md:w-[13rem] rounded-[50%] bg-light-grey opacity-40"></div>
+            <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
           </div>
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">
