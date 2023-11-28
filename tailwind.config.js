@@ -36,17 +36,27 @@ export default {
           "75%": { transform: "translateY(-2px)" },
           "100%": { transform: "translateY(0)" },
         },
+        "fade-in": {
+          "0%": { opacity: "0%", transform: "translateY(-10vh)"},
+          "100%": { opacity: "100%", transform: "translateY(0)"},
+        },
+        "fade-out": {
+          "0%": { opacity: "100%", transform: "translateY(0)"},
+          "100%": { opacity: "0%", transform: "translateY(-10vh)"},
+        },
       },
       animation: {
         float: "float 6s ease-in-out infinite",
         shadow: "shadow 6s ease-in-out infinite",
         shake: "shake .5s ease-in-out infinite",
         shakeUpDown: "shakeUpDown .3s ease-in-out infinite",
+        fadeIn: "fade-in 0.2s ease-in-out",
+        fadeOut: "fade-out 0.2s ease-in-out",
       },
     },
     colors: {
       white: "#ffffff",
-      "dark-grey": "#171717",
+      "dark-grey": "#191919",
       "light-grey": "#353535",
       green: "#00BE4C",
       grey: "#a3a3a3",

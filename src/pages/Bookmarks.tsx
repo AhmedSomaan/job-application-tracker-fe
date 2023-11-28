@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Details } from "./JobDetails";
+import { Details } from "../components/JobDetails";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
 import cat from "../assets/ThinkingCat.png";
@@ -12,12 +12,15 @@ const Bookmarks = () => {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/bookmarks`);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/bookmarks`,
+        );
+        console.log("fetched bookmarks from database");
         setBookmarks(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
+    };
     fetchBookmarks();
   }, []);
 
@@ -64,7 +67,9 @@ const Bookmarks = () => {
         </div>
         {bookmarks.length === 0 ? (
           <div className="flex h-full grow flex-col items-center justify-center gap-4">
-            <h2 className="text-xl md:text-3xl font-semibold">You Have No Bookmarks</h2>
+            <h2 className="text-xl font-semibold md:text-3xl">
+              You Have No Bookmarks
+            </h2>
             <img
               className=" w-[14rem] md:w-[20rem]"
               src={cat}
