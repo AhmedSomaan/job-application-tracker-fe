@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
-import cat from "../assets/ComputerCat.png";
+import cat from "../assets/PlanetCat.png";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
@@ -130,11 +130,11 @@ const HomePage = () => {
         {postings.length === 0 ? (
           <div className="flex h-full grow flex-col items-center justify-center">
             <img
-              className="animate-float w-[14rem] md:w-[20rem]"
+              className="animate-float w-[20rem] md:w-[25rem]"
               src={cat}
               alt="Green Cat floating on planet"
             />
-            <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
+            <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[12rem]"></div>
           </div>
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">

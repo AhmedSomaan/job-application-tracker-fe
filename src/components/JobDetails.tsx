@@ -1,11 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { NavLink, useLocation, useParams } from "react-router-dom";
 import backIcon from "../assets/icons/BackIcon.svg";
 import checkIcon from "../assets/icons/CheckIcon.svg";
 import bookmarkIcon from "../assets/icons/BookmarkGreenIcon.svg";
 import unbookmarkIcon from "../assets/icons/BookmarkEmptyIcon.svg";
-import cat from "../assets/cat_on_planet.png";
+import cat from "../assets/ComputerCat.png";
 
 export type Details = {
   bookmarked: boolean;
@@ -30,29 +28,33 @@ export const StatusEnum = {
   APPLY: "intend to apply",
 };
 
-const JobDetails = () => {
-  const { jobId } = useParams();
-  const [details, setDetails] = useState<Details>();
-  const location = useLocation();
-  const [selectedStatus, setSelectedStatus] = useState(StatusEnum.APPLY);
+interface DetailsProps {
+  dialogRef: React.RefObject<HTMLDialogElement>;
+  jobId: string;
+  setDetails: React.Dispatch<React.SetStateAction<Details | undefined>>;
+  details: Details | undefined;
+  setIsBookmarked: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setSelectedStatus: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/postings/${jobId}`,
-        );
-        setDetails(data);
-        setSelectedStatus(data.status);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDetails();
-  }, []);
+const JobDetails: React.FC<DetailsProps> = ({
+  dialogRef,
+  jobId,
+  setDetails,
+  details,
+  setIsBookmarked,
+  setSelectedStatus,
+}) => {
+  const handleClose = () => {
+    console.log("close Modal");
+    setIsBookmarked(details?.bookmarked);
+    dialogRef.current?.close();
+  };
 
   const handleBookmark = async () => {
     try {
+      // setIsBookmarked(!details?.bookmarked);
+      console.log("isBookmarked: ", !details?.bookmarked);
       const body = {
         isBookmarked: !details?.bookmarked,
       };
@@ -61,6 +63,7 @@ const JobDetails = () => {
         body,
       );
       console.log(data);
+      setIsBookmarked(data.isBookmarked);
       setDetails(data);
     } catch (error) {
       console.error(error);
@@ -93,7 +96,7 @@ const JobDetails = () => {
       applyButton = (
         <a
           className="hover:bg-green mb-4 w-full rounded-xl bg-light-grey p-3 hover:font-medium hover:text-dark-grey"
-          href={details?.link}
+          href={details?.link || "/*"}
           target="_blank"
         >
           Apply Now
@@ -115,7 +118,7 @@ const JobDetails = () => {
       applyButton = (
         <a
           className="w-full rounded-xl bg-light-grey p-3"
-          href={details?.link}
+          href={details?.link || "/*"}
           target="_blank"
         >
           Apply Now
@@ -124,15 +127,22 @@ const JobDetails = () => {
   }
 
   return (
-    <div>
+    <dialog
+      ref={dialogRef}
+      className="transition-all animate-fadeIn min-h-screen min-w-[100vw] bg-gradient-to-b from-[#0A0A0A] to-[#101010]"
+    >
       <header>
         <nav className="flex items-center justify-between p-4 md:p-8 md:pb-0">
-          <NavLink
-            to={location.state?.from ? location.state?.from : -1}
-            className="hover:text-green flex items-center gap-4 text-xl md:text-2xl"
+          <a
+            onClick={handleClose}
+            className="hover:text-green flex items-center gap-4 text-xl hover:cursor-pointer md:text-2xl"
           >
-            <img className="stroke-white" src={backIcon} alt="bookmark icon" />
-          </NavLink>
+            <img
+              className="stroke-white hover:scale-105"
+              src={backIcon}
+              alt="bookmark icon"
+            />
+          </a>
           <img
             className="hover:scale-105 hover:cursor-pointer"
             src={details?.bookmarked ? bookmarkIcon : unbookmarkIcon}
@@ -151,7 +161,7 @@ const JobDetails = () => {
                 alt="Company Logo"
               />
               <div className="flex h-full flex-col justify-around text-left">
-                <h1 className="line-clamp-3 break-words text-xl md:text-3xl font-medium">
+                <h1 className="line-clamp-3 break-words text-xl font-medium md:text-3xl">
                   {details?.title}
                 </h1>
                 <h2 className="line-clamp-1 break-all text-lg">
@@ -162,8 +172,9 @@ const JobDetails = () => {
             <div className=" flex flex-col items-center sm:ml-2 sm:min-w-[30%]">
               <label className="mb-1 self-start text-lg">Status</label>
               <select
+                autoFocus
                 className="mb-3 w-full rounded-xl bg-dark-grey p-2 px-4 text-lg hover:cursor-pointer"
-                value={selectedStatus}
+                value={details.status}
                 onChange={handleSelect}
               >
                 <option
@@ -178,7 +189,7 @@ const JobDetails = () => {
               {applyButton}
             </div>
           </div>
-          <div className="flex w-full flex-col text-left sm:flex-row sm:gap-4">
+          <div className="flex w-full flex-col text-left sm:flex-row sm:gap-4 md:gap-8">
             <div className="mb-4 w-full sm:grow">
               <h2 className="mb-1 text-lg">Description</h2>
               <div className="rounded-xl bg-dark-grey p-4 ">
@@ -186,7 +197,7 @@ const JobDetails = () => {
                 <p>{details?.description}</p>
               </div>
             </div>
-            <div className="sm:min-w-[30%]">
+            <div className="sm:min-w-[40%] lg:min-w-[30%]">
               <div className="mb-4 w-full">
                 <h2 className="mb-1 text-lg">Tags</h2>
                 <div className="flex gap-3 overflow-x-auto pb-1">
@@ -210,12 +221,11 @@ const JobDetails = () => {
                 <h2 className="mb-1 text-lg">Location</h2>
                 <div className="rounded-xl bg-dark-grey">
                   <p className="p-4">{details?.location}</p>
-                  <div className="flex aspect-square w-full items-center justify-center rounded-b-xl bg-light-grey">
-                    
+                  <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-b-xl bg-light-grey">
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d184589.25133211334!2d-79.5886287!3d43.706246!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON!5e0!3m2!1sen!2sca!4v1701112047163!5m2!1sen!2sca"
-                      width="600"
-                      height="450"
+                      width="100%"
+                      height="100%"
                       loading="lazy"
                     ></iframe>
                   </div>
@@ -230,14 +240,14 @@ const JobDetails = () => {
             Loading Details...
           </h1>
           <img
-            className="animate-float w-[14rem] md:w-[20rem]"
+            className="animate-shake w-[14rem] md:w-[20rem]"
             src={cat}
-            alt="Green Cat floating on planet"
+            alt="Green cat typing on laptop"
           />
-          <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
+          <div className="h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
         </main>
       )}
-    </div>
+    </dialog>
   );
 };
 

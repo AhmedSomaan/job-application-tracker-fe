@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Details } from "./JobDetails";
+import { Details } from "../components/JobDetails";
 import axios from "axios";
 import PostingCard from "../components/PostingCard";
-import cat from "../assets/cat_on_planet.png";
+import cat from "../assets/ThinkingCat.png";
 import logo from "../assets/JobCatLogo.png";
 
 const Bookmarks = () => {
@@ -12,12 +12,15 @@ const Bookmarks = () => {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/bookmarks`);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/bookmarks`,
+        );
+        console.log("fetched bookmarks from database");
         setBookmarks(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
+    };
     fetchBookmarks();
   }, []);
 
@@ -58,18 +61,20 @@ const Bookmarks = () => {
       </header>
       <main className="flex h-full grow flex-col p-4 md:p-8">
         <div>
-          <h1 className="mb-8 text-2xl font-medium sm:text-3xl md:text-4xl">
+          <h1 className="mb-8 text-2xl font-medium sm:text-4xl md:text-5xl">
             Bookmarks
           </h1>
         </div>
         {bookmarks.length === 0 ? (
-          <div className="flex h-full grow flex-col items-center justify-center">
+          <div className="flex h-full grow flex-col items-center justify-center gap-4">
+            <h2 className="text-xl font-semibold md:text-3xl">
+              You Have No Bookmarks
+            </h2>
             <img
-              className="animate-float w-[10rem] md:w-[14rem]"
+              className=" w-[14rem] md:w-[20rem]"
               src={cat}
-              alt="Green Cat floating on planet"
+              alt="Green Cat Thinking"
             />
-            <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40"></div>
           </div>
         ) : (
           <div className="flex flex-wrap items-center justify-center gap-4 rounded-xl sm:border sm:border-solid sm:border-white sm:p-4">
