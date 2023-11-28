@@ -5,7 +5,7 @@ import backIcon from "../assets/icons/BackIcon.svg";
 import checkIcon from "../assets/icons/CheckIcon.svg";
 import bookmarkIcon from "../assets/icons/BookmarkGreenIcon.svg";
 import unbookmarkIcon from "../assets/icons/BookmarkEmptyIcon.svg";
-import cat from "../assets/cat_on_planet.png";
+import cat from "../assets/ComputerCat.png";
 
 export type Details = {
   bookmarked: boolean;
@@ -151,7 +151,7 @@ const JobDetails = () => {
                 alt="Company Logo"
               />
               <div className="flex h-full flex-col justify-around text-left">
-                <h1 className="line-clamp-3 break-words text-xl md:text-3xl font-medium">
+                <h1 className="line-clamp-3 break-words text-xl font-medium md:text-3xl">
                   {details?.title}
                 </h1>
                 <h2 className="line-clamp-1 break-all text-lg">
@@ -211,7 +211,6 @@ const JobDetails = () => {
                 <div className="rounded-xl bg-dark-grey">
                   <p className="p-4">{details?.location}</p>
                   <div className="flex aspect-square w-full items-center justify-center rounded-b-xl bg-light-grey">
-                    
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d184589.25133211334!2d-79.5886287!3d43.706246!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON!5e0!3m2!1sen!2sca!4v1701112047163!5m2!1sen!2sca"
                       width="600"
@@ -230,11 +229,11 @@ const JobDetails = () => {
             Loading Details...
           </h1>
           <img
-            className="animate-float w-[14rem] md:w-[20rem]"
+            className="animate-shake w-[14rem] md:w-[20rem]"
             src={cat}
-            alt="Green Cat floating on planet"
+            alt="Green cat typing on laptop"
           />
-          <div className="animate-shadow h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
+          <div className="h-4 w-[10rem] rounded-[50%] bg-light-grey opacity-40 md:w-[13rem]"></div>
         </main>
       )}
     </div>
