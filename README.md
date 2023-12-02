@@ -1,3 +1,17 @@
+# Overview
+<p align="center">
+  <img src="/src/assets/JobCatLogo.png" width='100'> 
+<br/>JobCat - a Job application Catalogue to keep track ok all your job applicaitons in one place
+</p>
+
+# Features
+- Search for job postings based on job title, keyword or company name
+- Get list of 25 results from LinkedIn job postings, providing an overview of the jobs (job title, company name + logo, date posted and location)
+- Get more details about the job when you click a posting including description, a map to show where it's located and tags related to the job
+- Add bookmarks to the job to save it to a database
+- Apply to job and update application status (intend to apply, applied, and expired)
+- View all bookmarked job postings
+
 # Resources
 
 - [Backend](https://github.com/AhmedSomaan/job-application-tracker-be)
