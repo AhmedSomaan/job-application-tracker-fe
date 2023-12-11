@@ -1,7 +1,7 @@
 # Overview
 <p align="center">
   <img src="/src/assets/JobCatLogo.png" width='100'> 
-<br/>JobCat - a Job application Catalogue to keep track ok all your job applicaitons in one place
+<br/>JobCat - a Job application Catalogue to keep track of all your job applications in one place
 </p>
 
 # Features
